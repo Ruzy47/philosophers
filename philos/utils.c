@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:04:59 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/06/28 17:11:47 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:31:26 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,10 @@ long long int	get_time(t_philo *philo)
 {
 	struct	timeval	time;
 	
+	if (philo->time == 0)
+		philo->time = time.tv_sec * 1000 + time.tv_usec;
+	else
+		philo->time = philo->time_now;
 	gettimeofday(&time, NULL);
 	philo->time_now = (time.tv_sec * 1000 + time.tv_usec);
 	return (philo->time_now - philo->time);
