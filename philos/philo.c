@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/06/27 17:26:28 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:13:06 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	philo_create(t_menu *menu, t_philo *philo)
 	struct	timeval	time;
 	
 	i = 0;
-	philo->time_now = gettimeofday(&time, NULL);
-	printf("%ld\n %d\n", time.tv_sec, time.tv_usec);
+	gettimeofday(&time, NULL);
+	philo->time = time.tv_sec * 1000 + time.tv_usec;
 	while (++i <= menu->philo_count)
 	{
 		if (pthread_create(&philo[i].th, NULL, routine, (void *)&(menu->philo[i])) != 0)

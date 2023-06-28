@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/06/27 17:17:26 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:17:32 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ typedef struct	s_philo
 {
 	int				num;
 	pthread_t		th;
-	pthread_mutex_t	fork[1000];
+	pthread_mutex_t	*fork;
 	int				right_fork;
 	int				left_fork;
 	int				eat_times;
-	int				time_now;
+	long long int	time_now;
+	long long int	time;
 }				t_philo;
 
 typedef struct	s_menu
@@ -37,11 +38,12 @@ typedef struct	s_menu
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	meal_count;
-	t_philo	philo[1000];
+	t_philo	*philo;
 }				t_menu;
 
-int	philo_create(t_menu *menu, t_philo *philo);
-int	ft_atoi(const char *str);
-int	ft_error(char **argv);
+int				philo_create(t_menu *menu, t_philo *philo);
+long long int	get_time(t_philo *philo);
+int				ft_atoi(const char *str);
+int				ft_error(char **argv);
 
 #endif

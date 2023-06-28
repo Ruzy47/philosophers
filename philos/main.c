@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/06/27 22:05:39 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:25:54 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,18 @@ int fork_create(t_menu *menu, t_philo *philo)
     int 		i;
 	
 	i = 0;
-	while (++i <= menu->philo_count)
-	{
-		if (pthread_mutex_init(&philo->fork[i], NULL) != 0)
-			return (1);
-	}
+    philo->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * menu->philo_count);
+	if (pthread_mutex_init(philo->fork, NULL) != 0)
+		return (1);
     return (0);
 }
 
 void    philo_init(t_menu *menu)
 {
-    int i;
+    int     i;
 
     i = 0;
+    menu->philo = (t_philo *)malloc(sizeof(t_philo) * menu->philo_count);
     while (++i <= menu->philo_count)
     {
         menu->philo[i].num = i;
@@ -54,7 +53,7 @@ void	menu_init(char **argv, t_menu *menu)
 
 int main(int argc, char **argv)
 {
-	t_philo	*philo;
+	t_philo	philo;
 	t_menu	menu;
 
 	if (argc > 6 || argc < 5)
@@ -63,6 +62,6 @@ int main(int argc, char **argv)
 	if (ft_error(argv) != 0)
 		return (write(2, "Ruzik_ERROR\n", 13));
     philo_init(&menu);
-	if (fork_create(&menu, philo) != 0 || philo_create(&menu, philo) != 0)
+	if (fork_create(&menu, &philo) != 0 || philo_create(&menu, &philo) != 0)
 		return (write(2, "Ruzik_ERROR\n", 13));
 }

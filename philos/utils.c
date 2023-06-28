@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:04:59 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/06/27 15:43:25 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:11:47 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,13 @@ int	ft_atoi(const char *str)
 		str1++;
 	}
 	return (num * neg);
+}
+
+long long int	get_time(t_philo *philo)
+{
+	struct	timeval	time;
+	
+	gettimeofday(&time, NULL);
+	philo->time_now = (time.tv_sec * 1000 + time.tv_usec);
+	return (philo->time_now - philo->time);
 }
