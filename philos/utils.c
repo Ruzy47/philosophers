@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:04:59 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/06/28 18:04:24 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/09/22 12:31:08 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ long long int	get_time(t_philo *philo)
 		if (gettimeofday(&time, NULL) != 0)
 			return (1);
 		philo->time = time.tv_sec * 1000 + time.tv_usec;
+		printf("klj\n");
 		return (philo->time);
 	}
 	else
@@ -57,6 +58,8 @@ long long int	get_time(t_philo *philo)
 		if (gettimeofday(&time, NULL) != 0)
 			return (1);
 		philo->time_now = (time.tv_sec * 1000 + time.tv_usec);
+		printf("klfj\n");
 		return (philo->time_now - philo->time);
 	}
+	printf("klj\n");
 }
