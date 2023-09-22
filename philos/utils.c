@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:04:59 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/09/22 12:31:08 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/09/22 20:24:02 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,21 @@ int	ft_atoi(const char *str)
 long long int	get_time(t_philo *philo)
 {
 	struct	timeval	time;
-	
+
 	if (philo->time == 0)
 	{
 		if (gettimeofday(&time, NULL) != 0)
 			return (1);
 		philo->time = time.tv_sec * 1000 + time.tv_usec;
-		printf("klj\n");
 		return (philo->time);
 	}
 	else
 	{
 		if (gettimeofday(&time, NULL) != 0)
 			return (1);
+		//printf("uuu\n");
 		philo->time_now = (time.tv_sec * 1000 + time.tv_usec);
-		printf("klfj\n");
+		printf("%lld\n", philo->time_now - philo->time);
 		return (philo->time_now - philo->time);
 	}
-	printf("klj\n");
 }

@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/09/22 12:02:12 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/09/22 19:49:28 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,9 @@ typedef struct	s_philo
 {
 	int				num;
 	pthread_t		th;
-	pthread_mutex_t	*fork;
-	int				right_fork;
-	int				left_fork;
+	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*left_fork;
 	int				eat_times;
-	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				meal_count;
@@ -39,8 +37,7 @@ typedef struct	s_menu
 {
 	int	philo_count;
 	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
+	pthread_mutex_t	*fork;
 	t_philo	*philo;
 }				t_menu;
 
