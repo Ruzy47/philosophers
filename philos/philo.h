@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/09/23 15:11:42 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/09/25 19:09:54 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ typedef struct	s_philo
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				meal_count;
-	long long int	time_now;
-	long long int	time;
+	long long		time_now;
+	long long		time;
 }				t_philo;
 
 typedef struct	s_menu
@@ -44,10 +44,10 @@ typedef struct	s_menu
 	t_philo	*philo;
 }				t_menu;
 
-int				philo_create(t_menu *menu);
-int				ft_atoi(const char *str);
-int				ft_error(char **argv);
-void			*routine(void	*info);
-long long int	get_time(t_philo *philo);
+int					philo_create(t_menu *menu);
+int					ft_atoi(const char *str);
+int					ft_error(char **argv);
+void				*routine(void	*info);
+static long long	get_time(t_philo *philo);
 
 #endif
