@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 15:05:17 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/15 19:43:15 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/16 19:44:43 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,14 @@ int fork_create(t_menu *menu)
 	menu->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * (menu->philo_count));
 	menu->write = malloc(sizeof(pthread_mutex_t));
 	menu->eat_t = malloc(sizeof(pthread_mutex_t));
+	menu->meal = malloc(sizeof(pthread_mutex_t));
 	menu->die = -1;
 	menu->eat = -1;
 	while (++i < menu->philo_count)
 		pthread_mutex_init(&menu->fork[i], NULL);
+	pthread_mutex_init(menu->write, NULL);
+	pthread_mutex_init(menu->eat_t, NULL);
+	pthread_mutex_init(menu->meal, NULL);
 	return (0);
 }
 
@@ -37,6 +41,8 @@ void	philo_init(t_menu *menu, int i)
 		menu->philo[i].die = menu->die;
 		menu->philo[i].eat = menu->eat;
 		menu->philo[i].write = menu->write;
+		menu->philo[i].p_mutex = malloc(sizeof(pthread_mutex_t));
+		pthread_mutex_init(menu->philo[i].p_mutex, NULL);
 		menu->philo[i].left_fork = &menu->fork[i];
 		if (i == menu->philo_count - 1)
 			menu->philo[i].right_fork = &menu->fork[0];
