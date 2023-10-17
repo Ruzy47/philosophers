@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/16 19:41:59 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/17 13:42:47 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ typedef struct	s_philo
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*write;
-	pthread_mutex_t	*p_mutex;
-	int				die;
-	int				eat;
+	pthread_mutex_t	*meal;
+	pthread_mutex_t	*last;
+	int				*die;
+	int				*eat;
 	int				eat_times;
 	int				time_to_eat;
 	int				time_to_sleep;
@@ -47,6 +48,7 @@ typedef struct	s_menu
 	int				time_to_die;
 	int				die;
 	int				eat;
+	pthread_mutex_t	*last;
 	pthread_mutex_t	*meal;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	*write;
