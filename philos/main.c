@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 15:05:17 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/17 13:42:28 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/17 19:39:16 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	philo_init(t_menu *menu, int i)
 		menu->philo[i].time_to_eat = menu->time_to_eat;
 		menu->philo[i].time_to_sleep = menu->time_to_sleep;
 		menu->philo[i].time_to_die = menu->time_to_die;
-		menu->philo[i].last_meal = t_time();
+		menu->philo[i].last_meal = 0;
 		if (menu->meal_count > 0)
 			menu->philo[i].meal_count = menu->meal_count;
 		if (i == 0)
