@@ -6,20 +6,21 @@
 #    By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/25 10:59:36 by rugrigor          #+#    #+#              #
-#    Updated: 2023/10/18 21:04:26 by rugrigor         ###   ########.fr        #
+#    Updated: 2023/10/19 16:40:20 by rugrigor         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo_bonus
 
-BUILD = build
+BUILD = build_bonus
 
 CC = cc
 
-SRC = 	main_bonus.c 	\
-		philo_bonus.c 	\
-		utils_bonus.c 	\
+SRC = 	main_bonus.c	\
+		philo_bonus.c	\
+		utils_bonus.c	\
 		error_bonus.c	\
+		init_bonus.c	\
 
 OBJ = $(patsubst %.c, %.o, $(SRC))
 

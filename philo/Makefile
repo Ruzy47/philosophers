@@ -6,7 +6,7 @@
 #    By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/25 10:59:36 by rugrigor          #+#    #+#              #
-#    Updated: 2023/10/18 00:04:12 by rugrigor         ###   ########.fr        #
+#    Updated: 2023/10/19 16:25:38 by rugrigor         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,11 @@ BUILD = build
 
 CC = cc
 
-SRC = 	main.c 	\
-		philo.c 	\
-		utils.c 	\
-		error.c	\
+SRC = 	main.c		\
+		philo.c		\
+		utils.c		\
+		error.c		\
+		init.c		\
 
 OBJ = $(patsubst %.c, %.o, $(SRC))
 

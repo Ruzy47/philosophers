@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/17 19:38:48 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/19 17:13:50 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,19 @@ typedef struct	s_menu
 	pthread_mutex_t	*meal;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	*write;
-	pthread_mutex_t	*eat_t;
 	t_philo	*philo;
 }				t_menu;
 
-int			philo_create(t_menu *menu);
-int			ft_atoi(const char *str);
 int			ft_error(char **argv);
+int			ft_atoi(const char *str);
+int			fork_create(t_menu *menu);
+int			philo_create(t_menu *menu);
 void		*routine(void	*info);
-long long	get_time(t_philo *philo, int i);
-long long	t_time();
+void		philo_init(t_menu *menu, int i);
 void		p_printf(char *str, t_philo *philo);
+void		menu_init(char **argv, t_menu *menu);
+void		s_sleep(t_philo *philo, int i, long long n);
+long long	t_time();
+long long	get_time(t_philo *philo, int i);
 
 #endif
