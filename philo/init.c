@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 16:25:16 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/19 17:14:27 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/23 16:44:09 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 int	fork_create(t_menu *menu)
 {
 	int	i;
-	
+
 	i = -1;
 	menu->fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
-		* (menu->philo_count));
+			* (menu->philo_count));
 	menu->last = malloc(sizeof(pthread_mutex_t));
 	menu->write = malloc(sizeof(pthread_mutex_t));
 	menu->meal = malloc(sizeof(pthread_mutex_t));

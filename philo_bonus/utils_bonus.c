@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:04:59 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/22 15:07:37 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/23 11:37:17 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,22 @@ int	ft_atoi(const char *str)
 	return (num * neg);
 }
 
-long long	t_time()
+long long	t_time(void)
 {
-	struct	timeval	time;
-	
+	struct timeval	time;
+
 	gettimeofday(&time, NULL);
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
 long long	get_time(t_philo *philo, int i)
 {
-	struct	timeval	time;
+	struct timeval	time;
 	long long		t;
+
 	gettimeofday(&time, NULL);
 	if (i == 0)
-	{
 		t = ((time.tv_sec * 1000) + (time.tv_usec / 1000) - philo->time);
-	}
 	if (i == 1)
 		t = ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 	return (t);
@@ -71,7 +70,7 @@ void	s_sleep(t_philo *philo, int i, long long n)
 		while (1)
 		{
 			if (get_time(philo, 1) - n >= philo->time_to_eat)
-					break;
+				break ;
 			usleep(100);
 		}
 	}
@@ -80,7 +79,7 @@ void	s_sleep(t_philo *philo, int i, long long n)
 		while (1)
 		{
 			if (get_time(philo, 1) - n >= philo->time_to_sleep)
-				break;
+				break ;
 			usleep(50);
 		}
 	}

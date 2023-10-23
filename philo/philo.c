@@ -6,23 +6,11 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/19 17:19:54 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/23 16:58:13 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	check2(t_philo *philo)
-{
-	pthread_mutex_lock(philo->last);
-	if (*philo->die == 1)
-	{
-		pthread_mutex_unlock(philo->last);
-		return (1);
-	}
-	pthread_mutex_unlock(philo->last);
-	return (0);
-}
 
 void	routine2(t_philo	*philo)
 {
@@ -61,47 +49,56 @@ void	*routine(void	*info)
 		pthread_mutex_unlock(philo->meal);
 		p_printf("is sleeping", philo);
 		s_sleep(philo, 0, 0);
-		p_printf("is thinking", philo);	
+		p_printf("is thinking", philo);
 	}
 	return (NULL);
+}
+
+int	check_2(t_menu *menu, int i)
+{
+	while (menu->meal_count != -1 && i < menu->philo_count
+		&& menu->philo[i].eat_times >= menu->meal_count)
+		i++;
+	if (i == menu->philo_count)
+	{
+		pthread_mutex_lock(menu->meal);
+		menu->eat = 1;
+		pthread_mutex_unlock(menu->meal);
+		printf("[%lld ms] everyone ate\n", get_time(&menu->philo[0], 0));
+		return (1);
+	}
+	return (0);
 }
 
 int	check(t_menu *menu, int i)
 {
 	while (++i < menu->philo_count)
 	{
-		if (get_time(&menu->philo[i], 0) - menu->philo[i].last_meal > menu->time_to_die)
+		if (get_time(&menu->philo[i], 0) - menu->philo[i].last_meal
+			> menu->time_to_die)
 		{
 			pthread_mutex_lock(menu->last);
 			menu->die = 1;
 			pthread_mutex_unlock(menu->last);
-			printf("[%lld ms] %d died\n", get_time(&menu->philo[0], 0), menu->philo[i].num);
+			printf("[%lld ms] %d died\n", get_time(&menu->philo[0], 0),
+				menu->philo[i].num);
 			return (1);
 		}
 		pthread_mutex_unlock(menu->last);
 	}
-	i = 0;
-	while (menu->meal_count != -1 && i < menu->philo_count
-		&& menu->philo[i].eat_times >= menu->meal_count)
-			i++;
-		if (i == menu->philo_count)
-		{
-			pthread_mutex_lock(menu->meal);
-			menu->eat = 1;
-			pthread_mutex_unlock(menu->meal);
-			printf("[%lld ms] everyone ate\n", get_time(&menu->philo[0], 0));
-			return (1);
-		}
+	if (check_2(menu, 0) == 1)
+		return (1);
 	return (0);
 }
 
 int	philo_create(t_menu *menu)
 {
 	int	i;
-	
+
 	i = -1;
 	while (++i < menu->philo_count)
-		if (pthread_create(&menu->philo[i].th, NULL, &routine, &menu->philo[i]) == -1)
+		if (pthread_create(&menu->philo[i].th, NULL,
+				&routine, &menu->philo[i]) == -1)
 			return (1);
 	while (1)
 		if (check(menu, -1) == 1)

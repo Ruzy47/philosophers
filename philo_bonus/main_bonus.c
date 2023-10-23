@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 15:05:17 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/22 15:08:12 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/23 12:33:37 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,23 @@ int	check2(t_philo *philo)
 	return (0);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_menu	menu;
-	t_philo philo;
 
 	if (argc > 6 || argc < 5)
 		return (write(2, "Ruzik_ERROR\n", 13));
-	menu_init(argv, &philo, &menu);
 	if (ft_error(argv) != 0)
 		return (write(2, "Ruzik_ERROR\n", 13));
-	philo_init(&menu, &philo, -1);
-	if (philo_create(&menu, &philo, -1) != 0)
+	menu_init(argv, &menu, -1);
+	// philo_init(&philo);
+	// i = -1;
+	// printf("%d\n", philo.philo_count);
+	// while (++i < philo.philo_count)
+	// {
+	// 	menu.philo[i] = philo;
+	// 	menu.philo[i].num = i + 1;
+	// }
+	if (philo_create(&menu, -1) != 0)
 		return (write(2, "Ruzik_ERROR\n", 13));
 }

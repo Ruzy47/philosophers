@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/19 17:13:50 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/23 16:56:30 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct	s_philo
+typedef struct s_philo
 {
 	int				num;
 	pthread_t		th;
@@ -39,7 +39,7 @@ typedef struct	s_philo
 	long long		time;
 }				t_philo;
 
-typedef struct	s_menu
+typedef struct s_menu
 {
 	int				time_to_eat;
 	int				time_to_sleep;
@@ -52,10 +52,11 @@ typedef struct	s_menu
 	pthread_mutex_t	*meal;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	*write;
-	t_philo	*philo;
+	t_philo			*philo;
 }				t_menu;
 
 int			ft_error(char **argv);
+int			check2(t_philo *philo);
 int			ft_atoi(const char *str);
 int			fork_create(t_menu *menu);
 int			philo_create(t_menu *menu);
@@ -64,7 +65,7 @@ void		philo_init(t_menu *menu, int i);
 void		p_printf(char *str, t_philo *philo);
 void		menu_init(char **argv, t_menu *menu);
 void		s_sleep(t_philo *philo, int i, long long n);
-long long	t_time();
+long long	t_time(void);
 long long	get_time(t_philo *philo, int i);
 
 #endif
