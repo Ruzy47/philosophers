@@ -6,13 +6,14 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/23 20:17:42 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:51:03 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
+# include <sys/wait.h>
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -20,6 +21,8 @@
 # include <sys/time.h>
 # include <semaphore.h>
 # include <signal.h>
+# include <fcntl.h>
+# include <string.h>
 
 typedef struct s_philo
 {
@@ -49,9 +52,10 @@ typedef struct s_menu
 }				t_menu;
 
 int			ft_error(char **argv);
+int			check2(t_philo *philo);
 int			ft_atoi(const char *str);
 int			philo_create(t_menu *menu, int i);
-void		*routine(t_menu *menu, int i);
+void		*routine(t_philo *philo);
 void		p_printf(char *str, t_philo *philo);
 void		s_sleep(t_philo *philo, int i, long long n);
 void		philo_init(char **argv, t_menu *menu, int i);

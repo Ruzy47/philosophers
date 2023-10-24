@@ -6,24 +6,11 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/23 20:15:20 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/24 14:51:47 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-int	check2(t_philo *philo)
-{
-	if (get_time(philo, 0) - philo->last_meal > philo->time_to_die)
-	{
-		sem_wait(philo->last);
-		philo->die = 1;
-		sem_post(philo->last);
-		printf("[%lld ms] %d died\n", get_time(philo, 0), philo->num);
-		return (1);
-	}
-	return (0);
-}
 
 void	routine2(t_philo *philo)
 {
@@ -46,9 +33,8 @@ void	routine2(t_philo *philo)
 void	*check(void *info)
 {
 	t_philo	*philo;
-	int		i;
 
-	i = -1;
+	printf("check1 : %lld\n", t_time());
 	philo = (t_philo *)info;
 	while (1)
 	{
@@ -62,7 +48,6 @@ void	*check(void *info)
 			sem_post(philo->write);
 			exit (1);
 		}
-		i = 0;
 		sem_wait(philo->meal);
 		if (philo->meal_count != -1 && philo->eat_times >= philo->meal_count)
 		{
@@ -71,59 +56,84 @@ void	*check(void *info)
 		}
 		sem_post(philo->meal);
 	}
+	printf("check2 : %lld\n", t_time());
 	return (NULL);
 }
 
-void	*routine(t_menu *menu, int i)
+void	*routine(t_philo *philo)
 {
-	pthread_create(&menu->philo[i].th, NULL, check, &menu->philo[i]);
-	// if (menu->philo[i].num % 2)
-	// 	usleep(1000);
-	while (!check2(&menu->philo[i]))
+	printf("rout : %lld\n", t_time());
+	pthread_create(&philo->th, NULL, check, philo);
+	printf("%lld\n", t_time());
+	if (philo->num % 2)
+		usleep(1000);
+	while (!check2(philo))
 	{
-		routine2(&menu->philo[i]);
-		sem_wait(menu->philo[i].meal);
-		if (menu->philo[i].meal_count != -1 && menu->philo[i].eat_times
-			>= menu->philo[i].meal_count)
+		routine2(philo);
+		sem_wait(philo->meal);
+		if (philo->meal_count != -1 && philo->eat_times >= philo->meal_count)
 		{
-			sem_post(menu->philo[i].meal);
+			sem_post(philo->meal);
 			break ;
 		}
-		sem_post(menu->philo[i].meal);
-		p_printf("is sleeping", &menu->philo[i]);
-		s_sleep(&menu->philo[i], 0, 0);
-		p_printf("is thinking", &menu->philo[i]);
+		sem_post(philo->meal);
+		p_printf("is sleeping", philo);
+		s_sleep(philo, 0, 0);
+		p_printf("is thinking", philo);
 	}
-	pthread_join(menu->philo[i].th, NULL);
-	if (menu->philo[i].die)
+	pthread_join(philo->th, NULL);
+	if (philo->die)
 		exit(1);
 	exit(0);
 	return (NULL);
 }
 
-int	philo_create(t_menu *menu, int i)
+void	close2(t_menu *menu,  int i)
 {
-	int	n[1];
+	int	n;
 
 	while (++i < menu->philo_count)
 	{
-		menu->philo[i].pid = fork();
-		if (menu->philo[i].pid < 0)
-			return (1);
-		if (menu->philo[i].pid == 0)
-			routine(menu, i);
-		usleep(500);
-	}
-	i = -1;
-	while (++i < menu->philo_count)
-	{
-		waitpid(-1, n, 0);
-		if (n[0] > 0)
+		waitpid(menu->philo[i].pid, &n, 0);
+		if (n > 0)
 		{
 			i = -1;
 			while (++i < menu->philo_count)
 				kill(menu->philo[i].pid, SIGKILL);
+			break ;
 		}
 	}
+	sem_close(menu->philo[0].fork);
+	sem_close(menu->philo[0].meal);
+	sem_close(menu->philo[0].last);
+	sem_close(menu->philo[0].write);
+	sem_unlink("/sem_write");
+	sem_unlink("/sem_meal");
+	sem_unlink("/sem_last");
+	sem_unlink("/sem_fork");
+}
+
+int	philo_create(t_menu *menu, int i)
+{
+	// int		n;
+	t_philo	*philo;
+
+	philo = menu->philo;
+	printf("a %lld\n", t_time());
+	while (++i < menu->philo_count)
+	{
+		printf("b %lld\n", t_time());
+		philo[i].pid = fork();
+			printf("c %lld\n", t_time());
+		if (philo[i].pid == 0)
+			routine(&philo[i]);
+		if (philo[i].pid < 0)
+			return (1);
+		// waitpid(menu->philo[i].pid, &n, 0);
+		// if (n > 0)
+		// 	kill(menu->philo[i].pid, SIGKILL);
+		// break ;	
+	}
+	close2(menu, -1);
 	return (0);
 }
