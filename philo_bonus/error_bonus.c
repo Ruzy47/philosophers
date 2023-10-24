@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/23 17:14:17 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/24 20:01:24 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ft_error(char **argv)
 	{
 		if (ft_strncmp(argv[i], "\0", 1) == 0)
 			return (1);
-		if (i == 1 && ft_atoi(argv[i]) < 2)
+		if (i == 1 && ft_atoi(argv[i]) < 1)
 			return (1);
 		else if (i != 1 && ft_atoi(argv[i]) < 0)
 			return (1);

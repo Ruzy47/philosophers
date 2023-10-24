@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 15:05:17 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/24 13:54:43 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/24 16:33:33 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	check2(t_philo *philo)
 {
 	if (get_time(philo, 0) - philo->last_meal > philo->time_to_die)
 	{
-		// sem_wait(philo->last);
+		sem_wait(philo->last);
 		philo->die = 1;
-		// sem_post(philo->last);
+		sem_post(philo->last);
 		printf("[%lld ms] %d died\n", get_time(philo, 0), philo->num);
 		return (1);
 	}

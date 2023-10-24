@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/24 14:51:47 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/24 20:59:08 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ void	routine2(t_philo *philo)
 	sem_wait(philo->fork);
 	p_printf("take right fork", philo);
 	s_sleep(philo, 1, 0);
-	sem_wait(philo->last);
+	printf("%d %d\n", philo->num, philo->eat_times);
 	p_printf("is eating", philo);
+	sem_wait(philo->last);
 	philo->last_meal = get_time(philo, 0);
 	sem_post(philo->last);
 	sem_wait(philo->meal);
@@ -34,20 +35,19 @@ void	*check(void *info)
 {
 	t_philo	*philo;
 
-	printf("check1 : %lld\n", t_time());
 	philo = (t_philo *)info;
 	while (1)
 	{
-		if (get_time(philo, 0) - philo->last_meal > philo->time_to_die)
+		sem_wait(philo->last);
+		if (get_time(philo, 0) - philo->last_meal >= philo->time_to_die)
 		{
-			sem_wait(philo->last);
 			philo->die = 1;
 			sem_post(philo->last);
 			sem_wait(philo->write);
 			printf("[%lld ms] %d died\n", get_time(philo, 0), philo->num);
-			sem_post(philo->write);
 			exit (1);
 		}
+		sem_post(philo->last);
 		sem_wait(philo->meal);
 		if (philo->meal_count != -1 && philo->eat_times >= philo->meal_count)
 		{
@@ -56,17 +56,14 @@ void	*check(void *info)
 		}
 		sem_post(philo->meal);
 	}
-	printf("check2 : %lld\n", t_time());
 	return (NULL);
 }
 
 void	*routine(t_philo *philo)
 {
-	printf("rout : %lld\n", t_time());
 	pthread_create(&philo->th, NULL, check, philo);
-	printf("%lld\n", t_time());
 	if (philo->num % 2)
-		usleep(1000);
+		usleep(2000);
 	while (!check2(philo))
 	{
 		routine2(philo);
@@ -88,52 +85,45 @@ void	*routine(t_philo *philo)
 	return (NULL);
 }
 
-void	close2(t_menu *menu,  int i)
+void	close2(t_menu *menu, int i)
 {
 	int	n;
 
 	while (++i < menu->philo_count)
 	{
-		waitpid(menu->philo[i].pid, &n, 0);
+		waitpid(-1, &n, 0);
 		if (n > 0)
 		{
 			i = -1;
 			while (++i < menu->philo_count)
 				kill(menu->philo[i].pid, SIGKILL);
 			break ;
-		}
+		}	
 	}
+	sem_post(menu->philo[0].write);
 	sem_close(menu->philo[0].fork);
 	sem_close(menu->philo[0].meal);
 	sem_close(menu->philo[0].last);
 	sem_close(menu->philo[0].write);
-	sem_unlink("/sem_write");
-	sem_unlink("/sem_meal");
-	sem_unlink("/sem_last");
-	sem_unlink("/sem_fork");
 }
 
 int	philo_create(t_menu *menu, int i)
 {
-	// int		n;
 	t_philo	*philo;
 
 	philo = menu->philo;
-	printf("a %lld\n", t_time());
 	while (++i < menu->philo_count)
 	{
-		printf("b %lld\n", t_time());
 		philo[i].pid = fork();
-			printf("c %lld\n", t_time());
-		if (philo[i].pid == 0)
-			routine(&philo[i]);
 		if (philo[i].pid < 0)
 			return (1);
-		// waitpid(menu->philo[i].pid, &n, 0);
-		// if (n > 0)
-		// 	kill(menu->philo[i].pid, SIGKILL);
-		// break ;	
+		if (philo[i].pid == 0)
+			routine(&philo[i]);
 	}
 	close2(menu, -1);
+	sem_unlink("/sem_write");
+	sem_unlink("/sem_meal");
+	sem_unlink("/sem_last");
+	sem_unlink("/sem_fork");
 	return (0);
 }

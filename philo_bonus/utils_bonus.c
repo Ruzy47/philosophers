@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:04:59 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/24 14:50:56 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/24 20:54:09 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ long long	get_time(t_philo *philo, int i)
 	struct timeval	time;
 	long long		t;
 
+	t = 0;
 	gettimeofday(&time, NULL);
 	if (i == 0)
 		t = ((time.tv_sec * 1000) + (time.tv_usec / 1000) - philo->time);
@@ -65,18 +66,20 @@ long long	get_time(t_philo *philo, int i)
 void	s_sleep(t_philo *philo, int i, long long n)
 {
 	n = t_time();
-	if (i == 1)
+	if (i == 1 && philo->die == -1)
 	{
-		while (1)
+		// printf("%d %d\n", philo->num, philo->eat_times);
+		// printf("%d\n", philo->die);
+		while (philo->die == -1)
 		{
 			if (get_time(philo, 1) - n >= philo->time_to_eat)
 				break ;
-			usleep(100);
+			usleep(50);
 		}
 	}
-	if (i == 0)
+	if (i == 0 && philo->die == -1)
 	{
-		while (1)
+		while (philo->die == -1)
 		{
 			if (get_time(philo, 1) - n >= philo->time_to_sleep)
 				break ;
@@ -88,8 +91,9 @@ void	s_sleep(t_philo *philo, int i, long long n)
 void	p_printf(char *str, t_philo *philo)
 {
 	sem_wait(philo->write);
+	// printf("%d %d\n", philo->num, philo->eat_times);
 	if (philo->meal_count && philo->meal_count != philo->eat_times
-		&& philo->die == -1 && philo->eat == -1)
+		&& philo->die == -1)
 	{
 		printf("[%lld ms] %d %s\n", get_time(philo, 0), philo->num, str);
 	}

@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/24 14:51:03 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/24 20:15:38 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct s_philo
 	sem_t			*meal;
 	sem_t			*last;
 	int				die;
-	int				eat;
 	int				eat_times;
 	int				time_to_eat;
 	int				time_to_sleep;

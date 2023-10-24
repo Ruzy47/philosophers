@@ -6,7 +6,7 @@
 #    By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/25 10:59:36 by rugrigor          #+#    #+#              #
-#    Updated: 2023/10/19 16:25:38 by rugrigor         ###   ########.fr        #
+#    Updated: 2023/10/24 17:30:16 by rugrigor         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ OBJ = $(patsubst %.c, %.o, $(SRC))
 
 PHILO = $(patsubst %.o, $(BUILD)/%.o, $(OBJ))
 
-CFLAGS = -g -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -g -Wall -Wextra -Werror
 
 $(BUILD)/%.o: %.c Makefile
 	@mkdir -p $(BUILD)

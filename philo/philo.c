@@ -6,16 +6,18 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/23 16:58:13 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/24 20:47:12 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	routine2(t_philo	*philo)
+int	routine2(t_philo	*philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	p_printf("take left fork", philo);
+	if (!philo->right_fork)
+		return (1);
 	pthread_mutex_lock(philo->right_fork);
 	p_printf("take right fork", philo);
 	s_sleep(philo, 1, 0);
@@ -28,6 +30,7 @@ void	routine2(t_philo	*philo)
 	pthread_mutex_unlock(philo->meal);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+	return (0);
 }
 
 void	*routine(void	*info)
@@ -36,10 +39,11 @@ void	*routine(void	*info)
 
 	philo = (t_philo *)info;
 	if ((philo->num - 1) % 2)
-		usleep(2000);
+		usleep(7000);
 	while (!check2(philo))
 	{
-		routine2(philo);
+		if (routine2(philo))
+			break ;
 		pthread_mutex_lock(philo->meal);
 		if (*philo->eat == 1)
 		{
@@ -74,10 +78,10 @@ int	check(t_menu *menu, int i)
 {
 	while (++i < menu->philo_count)
 	{
+		pthread_mutex_lock(menu->last);
 		if (get_time(&menu->philo[i], 0) - menu->philo[i].last_meal
-			> menu->time_to_die)
+			>= menu->time_to_die)
 		{
-			pthread_mutex_lock(menu->last);
 			menu->die = 1;
 			pthread_mutex_unlock(menu->last);
 			printf("[%lld ms] %d died\n", get_time(&menu->philo[0], 0),
@@ -97,19 +101,19 @@ int	philo_create(t_menu *menu)
 
 	i = -1;
 	while (++i < menu->philo_count)
+	{
+		menu->philo[i].num = i + 1;
 		if (pthread_create(&menu->philo[i].th, NULL,
 				&routine, &menu->philo[i]) == -1)
 			return (1);
+	}
 	while (1)
 		if (check(menu, -1) == 1)
 			break ;
 	i = -1;
 	while (++i < menu->philo_count)
-	{
 		if (pthread_join(menu->philo[i].th, NULL) != 0)
 			return (1);
-		pthread_detach(menu->philo[i].th);
-	}
 	i = -1;
 	while (++i < menu->philo_count)
 		pthread_mutex_destroy(&(menu->fork[i]));

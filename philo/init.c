@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 16:25:16 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/23 16:44:09 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/24 17:40:38 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,22 @@ void	philo_init(t_menu *menu, int i)
 {
 	while (++i < menu->philo_count)
 	{
-		menu->philo[i].num = i + 1;
 		menu->philo[i].die = &(menu->die);
 		menu->philo[i].eat = &(menu->eat);
 		menu->philo[i].last = menu->last;
 		menu->philo[i].write = menu->write;
 		menu->philo[i].meal = menu->meal;
 		menu->philo[i].left_fork = &menu->fork[i];
+		menu->philo[i].right_fork = &menu->fork[i + 1];
 		if (i == menu->philo_count - 1)
 			menu->philo[i].right_fork = &menu->fork[0];
-		else
-			menu->philo[i].right_fork = &menu->fork[i + 1];
+		if (menu->philo_count == 1)
+			menu->philo[i].right_fork = NULL;
 		menu->philo[i].eat_times = 0;
 		menu->philo[i].time_to_eat = menu->time_to_eat;
 		menu->philo[i].time_to_sleep = menu->time_to_sleep;
 		menu->philo[i].time_to_die = menu->time_to_die;
-		menu->philo[i].last_meal = t_time();
+		menu->philo[i].last_meal = 0;
 		if (menu->meal_count > 0)
 			menu->philo[i].meal_count = menu->meal_count;
 		if (i == 0)
