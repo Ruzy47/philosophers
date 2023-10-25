@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:04:59 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/25 10:19:21 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/25 11:01:42 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ long long	get_time(t_philo *philo, int i)
 void	s_sleep(t_philo *philo, int i, long long n)
 {
 	n = t_time();
-	if (i == 1 && philo->die == -1)
+	if (i == 1)
 	{
 		while (philo->die == -1)
 		{
@@ -75,7 +75,7 @@ void	s_sleep(t_philo *philo, int i, long long n)
 			usleep(50);
 		}
 	}
-	if (i == 0 && philo->die == -1)
+	if (i == 0)
 	{
 		while (philo->die == -1)
 		{

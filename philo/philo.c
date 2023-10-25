@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/25 09:59:02 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/25 10:59:01 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,20 @@ void	*routine(void	*info)
 
 int	check_2(t_menu *menu, int i)
 {
+	pthread_mutex_lock(menu->meal);
 	while (menu->meal_count != -1 && i < menu->philo_count
 		&& menu->philo[i].eat_times >= menu->meal_count)
 		i++;
 	if (i == menu->philo_count)
 	{
-		pthread_mutex_lock(menu->meal);
+		pthread_mutex_lock(menu->write);
 		menu->eat = 1;
-		pthread_mutex_unlock(menu->meal);
 		printf("[%lld ms] everyone ate\n", get_time(&menu->philo[0], 0));
+		pthread_mutex_unlock(menu->write);
+		pthread_mutex_unlock(menu->meal);
 		return (1);
 	}
+	pthread_mutex_unlock(menu->meal);
 	return (0);
 }
 
@@ -82,10 +85,12 @@ int	check(t_menu *menu, int i)
 		if (get_time(&menu->philo[i], 0) - menu->philo[i].last_meal
 			>= menu->time_to_die)
 		{
+			pthread_mutex_lock(menu->write);
 			menu->die = 1;
-			pthread_mutex_unlock(menu->last);
 			printf("[%lld ms] %d died\n", get_time(&menu->philo[0], 0),
 				menu->philo[i].num);
+			pthread_mutex_unlock(menu->write);
+			pthread_mutex_unlock(menu->last);
 			return (1);
 		}
 		pthread_mutex_unlock(menu->last);
