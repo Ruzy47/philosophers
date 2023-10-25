@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/25 10:59:01 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:13:41 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	routine2(t_philo	*philo)
 		return (1);
 	pthread_mutex_lock(philo->right_fork);
 	p_printf("take right fork", philo);
-	s_sleep(philo, 1, 0);
 	p_printf("is eating", philo);
+	s_sleep(philo, 1, 0);
 	pthread_mutex_lock(philo->last);
 	philo->last_meal = get_time(philo, 0);
 	pthread_mutex_unlock(philo->last);

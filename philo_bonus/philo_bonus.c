@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/25 10:19:11 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/25 18:13:46 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	routine2(t_philo *philo)
 	p_printf("take left fork", philo);
 	sem_wait(philo->fork);
 	p_printf("take right fork", philo);
-	s_sleep(philo, 1, 0);
 	p_printf("is eating", philo);
+	s_sleep(philo, 1, 0);
 	sem_wait(philo->last);
 	philo->last_meal = get_time(philo, 0);
 	sem_post(philo->last);
