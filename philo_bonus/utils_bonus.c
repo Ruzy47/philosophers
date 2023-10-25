@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:04:59 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/24 20:54:09 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/25 10:19:21 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ void	s_sleep(t_philo *philo, int i, long long n)
 	n = t_time();
 	if (i == 1 && philo->die == -1)
 	{
-		// printf("%d %d\n", philo->num, philo->eat_times);
-		// printf("%d\n", philo->die);
 		while (philo->die == -1)
 		{
 			if (get_time(philo, 1) - n >= philo->time_to_eat)
@@ -91,9 +89,7 @@ void	s_sleep(t_philo *philo, int i, long long n)
 void	p_printf(char *str, t_philo *philo)
 {
 	sem_wait(philo->write);
-	// printf("%d %d\n", philo->num, philo->eat_times);
-	if (philo->meal_count && philo->meal_count != philo->eat_times
-		&& philo->die == -1)
+	if (philo->die == -1)
 	{
 		printf("[%lld ms] %d %s\n", get_time(philo, 0), philo->num, str);
 	}

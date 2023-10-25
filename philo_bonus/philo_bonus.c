@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/24 20:59:08 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/25 10:19:11 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	routine2(t_philo *philo)
 	sem_wait(philo->fork);
 	p_printf("take right fork", philo);
 	s_sleep(philo, 1, 0);
-	printf("%d %d\n", philo->num, philo->eat_times);
 	p_printf("is eating", philo);
 	sem_wait(philo->last);
 	philo->last_meal = get_time(philo, 0);
@@ -52,7 +51,7 @@ void	*check(void *info)
 		if (philo->meal_count != -1 && philo->eat_times >= philo->meal_count)
 		{
 			sem_post(philo->meal);
-			break ;
+			exit (0);
 		}
 		sem_post(philo->meal);
 	}
@@ -115,10 +114,10 @@ int	philo_create(t_menu *menu, int i)
 	while (++i < menu->philo_count)
 	{
 		philo[i].pid = fork();
-		if (philo[i].pid < 0)
-			return (1);
 		if (philo[i].pid == 0)
 			routine(&philo[i]);
+		if (philo[i].pid < 0)
+			return (1);
 	}
 	close2(menu, -1);
 	sem_unlink("/sem_write");

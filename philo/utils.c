@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:04:59 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/24 20:00:08 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/25 09:54:51 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,7 @@ void	s_sleep(t_philo *philo, int i, long long n)
 void	p_printf(char *str, t_philo *philo)
 {
 	pthread_mutex_lock(philo->write);
-	if (philo->meal_count && philo->meal_count != philo->eat_times
-		&& *philo->die == -1 && *philo->eat == -1)
+	if (*philo->die == -1 && *philo->eat == -1)
 	{
 		printf("[%lld ms] %d %s\n", get_time(philo, 0), philo->num, str);
 	}

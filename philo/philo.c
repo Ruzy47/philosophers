@@ -6,7 +6,7 @@
 /*   By: rugrigor <rugrigor@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:52:54 by rugrigor          #+#    #+#             */
-/*   Updated: 2023/10/24 20:47:12 by rugrigor         ###   ########.fr       */
+/*   Updated: 2023/10/25 09:59:02 by rugrigor         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	routine2(t_philo	*philo)
 	pthread_mutex_lock(philo->right_fork);
 	p_printf("take right fork", philo);
 	s_sleep(philo, 1, 0);
-	pthread_mutex_lock(philo->last);
 	p_printf("is eating", philo);
+	pthread_mutex_lock(philo->last);
 	philo->last_meal = get_time(philo, 0);
 	pthread_mutex_unlock(philo->last);
 	pthread_mutex_lock(philo->meal);
@@ -45,7 +45,7 @@ void	*routine(void	*info)
 		if (routine2(philo))
 			break ;
 		pthread_mutex_lock(philo->meal);
-		if (*philo->eat == 1)
+		if (philo->meal_count && philo->eat_times >= philo->meal_count)
 		{
 			pthread_mutex_unlock(philo->meal);
 			break ;
